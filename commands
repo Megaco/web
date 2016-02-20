@@ -1,0 +1,3 @@
+git clone https://github.com/Megaco/web.git && chmod +x web/etc/init.sh && web/etc/init.sh
+
+
