@@ -11,7 +11,7 @@ sudo ln -s /home/box/etc/hello.py /etc/gunicorn.d/hello.py
 
 cd /home/box/web
 virtualenv --python=python3 --always-copy venv
-source web/venv/bin/activate
+source venv/bin/activate
 pip install gunicorn
 #gunicorn hello:application
 gunicorn -c /home/box/web/etc/hello.py  hello:application
