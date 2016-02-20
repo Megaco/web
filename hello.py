@@ -1,6 +1,3 @@
-#!/usr/bin/python
-
-from urllib.parse import parse_qs
 
 def application(environ, start_response):
     params = environ["QUERY_STRING"].split("&")
