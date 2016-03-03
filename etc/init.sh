@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+tmux attach -t base || tmux new -s base
 sudo apt-get update
 sudo apt-get install -y nginx
 sudo ln -s /home/box/web/etc/nginx.conf  /etc/nginx/sites-enabled/test.conf
@@ -21,6 +22,6 @@ pip install Django
 
 #gunicorn -c /home/box/web/etc/gunicorn_settings.py /home/box/web/ask/ask/wsgi.py
 #cd ask
-gunicorn ask.wsgi:application --pythonpath ask
+gunicorn -w 1 -b 0.0.0.0:8000 ask.wsgi --pythonpath ask
 #sudo ln -s /home/box/web/etc/gunicorn.conf   /etc/gunicorn.d/test
 #sudo /etc/init.d/gunicorn restart
