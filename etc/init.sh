@@ -5,7 +5,7 @@ sudo apt-get install -y nginx
 sudo ln -s /home/box/web/etc/nginx.conf  /etc/nginx/sites-enabled/test.conf
 sudo rm -rf /etc/nginx/sites-enabled/default
 sudo /etc/init.d/nginx restart
-apt-get install python3-dev -y
+sudo apt-get install python3-dev -y
 sudo apt-get install python-mysqldb -y
 sudo apt-get install libmysqlclient-dev -y
 #cd /home/box/web/venev
