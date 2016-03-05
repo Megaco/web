@@ -18,9 +18,9 @@ source venv/bin/activate
 
 pip install gunicorn
 pip install Django
-pip install MySQL-python
+#pip install MySQL-python
 pip install pymysql
-pip install mysqlclient
+#pip install mysqlclient
 #django-admin startproject ask
 #gunicorn hello:application
 
