@@ -5,7 +5,9 @@ sudo apt-get install -y nginx
 sudo ln -s /home/box/web/etc/nginx.conf  /etc/nginx/sites-enabled/test.conf
 sudo rm -rf /etc/nginx/sites-enabled/default
 sudo /etc/init.d/nginx restart
+apt-get install python3-dev -y
 sudo apt-get install python-mysqldb -y
+sudo apt-get install libmysqlclient-dev -y
 #cd /home/box/web/venev
 #source bin/activate
 #cd ../
@@ -20,7 +22,7 @@ pip install gunicorn
 pip install Django
 #pip install MySQL-python
 pip install pymysql
-#pip install mysqlclient
+pip install mysqlclient
 #django-admin startproject ask
 #gunicorn hello:application
 
