@@ -39,9 +39,9 @@ def popular(request):
 def question(request, slug):
     questionid = get_object_or_404(Question, id=slug)
     answers = models.Answer.objects.all().filter(question=questionid)
-
+    question = models.Question.objects.get(id=slug)
     return render(request, 'question.html', {
         # 'page': page,
-        # 'paginator': paginator,
+        'question': question,
         'answers': answers,
     })
