@@ -1,11 +1,11 @@
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.views.decorators.http import require_GET
 
 # Create your views here.
 from django.http import HttpResponse, Http404
 from . import models
-from qa.models import paginate
+from qa.models import paginate, Answer, Question
 
 
 def test(request, *args, **kwargs):
@@ -27,7 +27,7 @@ def list_new(request):
     })
 
 def popular(request):
-    questions_list = models.Question.objects.all().order_by('rating')
+    questions_list = Question.objects.all().order_by('rating')
     # paginator.baseurl = '/?page='
     questions=paginate(request,questions_list)
     return render(request, 'list_new.html', {
@@ -37,7 +37,8 @@ def popular(request):
     })
 
 def question(request, slug):
-    answers = models.Answer.objects.all().filter(question=slug)
+    questionid = get_object_or_404(Question, id=slug)
+    answers = models.Answer.objects.all().filter(question=questionid)
 
     return render(request, 'question.html', {
         # 'page': page,
