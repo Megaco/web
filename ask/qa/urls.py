@@ -7,9 +7,9 @@ from . import views
 urlpatterns = [
     url(r'^signup/', views.index, name='signup'),
     url(r'^login/', views.index, name='signup'),
-    url(r'^question/([^/]+)/', views.test, name='question'),
+    url(r'^question/(?P<slug>\w+)/', views.question, name='question'),
     url(r'^ask/', views.index, name='ask'),
-    url(r'^popular/', views.index, name='popular'),
+    url(r'^popular/', views.popular, name='popular'),
     url(r'^new/', views.index, name='new'),
-    url(r'^$', views.test,name='index')
+    url(r'^$', views.list_new,name='list_new')
 ]

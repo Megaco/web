@@ -1,9 +1,11 @@
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db import models
 from django.contrib.auth.models import User
-# Create your models here.
+from django.http import Http404
+
 
 class Question(models.Model):
-    title = models.CharField(max_length=254)
+    title = models.CharField(max_length=255)
     text = models.TextField()
     added_at = models.DateTimeField(blank=True)
     rating = models.IntegerField(blank=True)
@@ -27,3 +29,41 @@ class Answer(models.Model):
         return '/question/%d/' % self.pk
     class Meta:
         ordering = ['-added_at']
+
+# class QuestionManager(models.Manager):
+#     def main(self, since, limit=10):
+#         qs = self.order_by('-id')
+#         res = []
+#         if since is not None:
+#             qs = qs.filter('id__lt'= since)
+#         for p in qs[:1000]:
+#             if len(res):
+#                 res.append(p)
+#             # elif res[-1].category != p.category:
+#             #     res.append(p)
+#             if len(res) >= limit:
+#                 break
+#         return res
+
+
+def paginate(request, qs):
+    try:
+        limit = int(request.GET.get('limit', 10))
+    except ValueError:
+        limit = 10
+    if limit > 100:
+        limit = 10
+    try:
+        page = int(request.GET.get('page', 1))
+    except ValueError:
+        raise Http404
+    paginator = Paginator(qs, limit)
+    try:
+        page = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        page = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        page = paginator.page(paginator.num_pages)
+    return page
