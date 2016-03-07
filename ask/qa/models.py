@@ -7,7 +7,7 @@ from django.http import Http404
 class Question(models.Model):
     title = models.CharField(max_length=255)
     text = models.TextField()
-    added_at = models.DateTimeField(null=False)
+    added_at = models.DateTimeField(auto_now_add=True)
     rating = models.IntegerField(blank=True)
     author = models.ForeignKey(User, null=True, on_delete=models.SET_NULL,related_name='question_user_author')
     likes = models.ManyToManyField(User,related_name='question_user_likes')
@@ -20,7 +20,7 @@ class Question(models.Model):
 
 class Answer(models.Model):
     text = models.TextField()
-    added_at = models.DateTimeField(null=False)
+    added_at = models.DateTimeField(auto_now_add=True)
     question = models.ForeignKey(Question)
     author = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
     def __unicode__(self):
