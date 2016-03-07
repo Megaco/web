@@ -27,7 +27,7 @@ def list_new(request):
     })
 
 def popular(request):
-    questions_list = Question.objects.all().order_by('rating')
+    questions_list = Question.objects.all().order_by('rating').reverse()
     # paginator.baseurl = '/?page='
     questions=paginate(request,questions_list)
     return render(request, 'list_new.html', {
