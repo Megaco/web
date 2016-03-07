@@ -11,7 +11,7 @@ class Question(models.Model):
     added_at = models.DateTimeField(auto_now_add=True)
     rating = models.IntegerField(default=0)
     author = models.ForeignKey(User, null=True, on_delete=models.SET_NULL,related_name='question_user_author')
-    likes = models.ManyToManyField(User,related_name='question_user_likes')
+    likes = models.ManyToManyField(User,related_name='question_user_likes', default=0)
     def __unicode__(self):
         return self.title
     def get_absolute_url(self):
@@ -47,24 +47,3 @@ class Answer(models.Model):
 #         return res
 
 
-def paginate(request, qs):
-    try:
-        limit = int(request.GET.get('limit', 10))
-    except ValueError:
-        limit = 10
-    if limit > 100:
-        limit = 10
-    try:
-        page = int(request.GET.get('page', 1))
-    except ValueError:
-        raise Http404
-    paginator = Paginator(qs, limit)
-    try:
-        page = paginator.page(page)
-    except PageNotAnInteger:
-        # If page is not an integer, deliver first page.
-        page = paginator.page(1)
-    except EmptyPage:
-        # If page is out of range (e.g. 9999), deliver last page of results.
-        page = paginator.page(paginator.num_pages)
-    return page

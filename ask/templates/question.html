@@ -5,16 +5,51 @@
     <title></title>
 </head>
 <body>
-
-
-    <h5>{{ question.title }}</h5>
-    <h3>{{ question.text }}</h3>
+Question:
+<p> Title - {{ question.title }} </p>
+<p> Text - {{ question.text }} </p>
 
     {% for answer in answers %}
-        <h3>{{ answer.text }}</h3>
-
-
+        <p> {{ answer.text }}</p>
     {% endfor %}
+
+<form method="post" action="/answer/">
+    {% csrf_token %}
+    <fieldset>
+        {% for field in form %}
+            <div>
+                <label> {{ field.label }} </label>
+                <div> {{ field }} </div>
+            </div>
+        {% endfor %}
+    </fieldset>
+    <div>
+        <button type="submit"> Save </button>
+    </div>
+</form>
+
+
+
+{#    {% for e in form.non_field_errors %}#}
+{#        <div class="alert alert-danger">{{ e }}</div>#}
+{#    {% endfor %}#}
+{#    <form class="form-horizontal" method="post" action="/answer/">#}
+{#        {% csrf_token %}#}
+{#        <fieldset>#}
+{#            {% for field in form %}#}
+{#                <div class="control-group#}
+{#{% if field.errors %}has-error{% endif %}">#}
+{#                    <label class="control-label">{{ field.label }}</label>#}
+{#                    <div class="controls">{{ field }}</div>#}
+{#                </div>#}
+{#            {% endfor %}#}
+{#        </fieldset>#}
+{#        <div class="form-actions">#}
+{#            <button type="submit" class="btn btn-primary">#}
+{#                Сохранить</button>#}
+{#        </div>#}
+{#    </form>#}
+
 
 </body>
 </html>
