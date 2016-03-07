@@ -1,4 +1,5 @@
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.core.urlresolvers import reverse
 from django.db import models
 from django.contrib.auth.models import User
 from django.http import Http404
@@ -8,13 +9,13 @@ class Question(models.Model):
     title = models.CharField(max_length=255)
     text = models.TextField()
     added_at = models.DateTimeField(auto_now_add=True)
-    rating = models.IntegerField(blank=True)
+    rating = models.IntegerField(default=0)
     author = models.ForeignKey(User, null=True, on_delete=models.SET_NULL,related_name='question_user_author')
     likes = models.ManyToManyField(User,related_name='question_user_likes')
     def __unicode__(self):
         return self.title
     def get_absolute_url(self):
-        return '/question/%d/' % self.pk
+        return reverse('question', args=[str(self.id)])
     class Meta:
         ordering = ['-added_at']
 
