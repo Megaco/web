@@ -27,9 +27,12 @@ pip install mysqlclient
 #gunicorn hello:application
 
 #gunicorn -c /home/box/web/etc/gunicorn_settings.py /home/box/web/ask/ask/wsgi.py
-#cd ask
+cd ask
 sudo service mysql restart
 mysql -uroot -e "CREATE DATABASE box_django;"
+python3 manage.py makemigrations
+python3 manage.py migrate
+
 gunicorn -w 1 -b 0.0.0.0:8000 ask.wsgi --pythonpath ask
 #sudo ln -s /home/box/web/etc/gunicorn.conf   /etc/gunicorn.d/test
 #sudo /etc/init.d/gunicorn restart
