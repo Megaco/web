@@ -1,5 +1,6 @@
 from django.http import Http404
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+import hashlib, uuid
 
 
 def paginate(request, qs):
@@ -23,3 +24,10 @@ def paginate(request, qs):
         # If page is out of range (e.g. 9999), deliver last page of results.
         page = paginator.page(paginator.num_pages)
     return paginator, page
+
+def salt_and_hash(password):
+    password= password.encode('utf-8')
+    salt = "salt".encode('utf-8')
+    hashed_password = hashlib.sha512(password+salt).hexdigest()
+    return hashed_password
+

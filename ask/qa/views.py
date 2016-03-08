@@ -1,13 +1,16 @@
+from datetime import timedelta
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.core.urlresolvers import reverse
 from django.shortcuts import render, get_object_or_404
+from django.utils.datetime_safe import datetime
 from django.views.decorators.http import require_GET, require_POST
 
 # Create your views here.
 from django.http import HttpResponse, Http404, HttpResponseRedirect
 from . import models
+from qa.auth import do_login, do_signup, findusername
 from qa.forms import AskForm, AnswerForm
-from qa.models import Answer, Question
+from qa.models import Answer, Question, User
 from .utils import paginate
 
 
@@ -41,7 +44,7 @@ def popular(request):
         'questions': questions,
     })
 
-@require_GET
+
 def question(request, slug):
     question = get_object_or_404(Question, id=slug)
     # answers = models.Answer.objects.all().filter(question=question)
@@ -70,8 +73,44 @@ def ask(request):
 @require_POST
 def answer(request):
     form = AnswerForm(request.POST)
+    form.author=findusername(request)
+
     if form.is_valid():
         post = form.save()
         #url = post.get_url()
         return HttpResponseRedirect(reverse('question', args=[post.question.id]))
     return HttpResponseRedirect('/')
+
+
+def login(request):
+    error = ''
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        url = request.POST.get('continue', '/')
+        sessid = do_login(username, password)
+        if sessid:
+            response = HttpResponseRedirect(url)
+            response.set_cookie('sessid', sessid, httponly=True,
+                                expires = datetime.now()+ timedelta(days=5))
+            return response
+        else:
+            error = u'Неверный логин / пароль'
+    return render(request, 'login.html', {'error': error,})
+
+def signup(request):
+    error = ''
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        email = request.POST.get('email')
+        url = request.POST.get('continue', '/')
+        sessid = do_signup(username, password, email)
+        if sessid:
+            response = HttpResponseRedirect(url)
+            response.set_cookie('sessid', sessid, httponly=True,
+                                expires = datetime.now()+ timedelta(days=5))
+            return response
+        else:
+            error = u'Smth wrong'
+    return render(request, 'signup.html', {'error': error })

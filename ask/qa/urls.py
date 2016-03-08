@@ -5,8 +5,8 @@ from django.conf.urls import url
 from . import views
 
 urlpatterns = [
-    url(r'^signup/', views.index, name='signup'),
-    url(r'^login/', views.index, name='signup'),
+    url(r'^signup/', views.signup, name='signup'),
+    url(r'^login/', views.login, name='signup'),
     url(r'^question/(?P<slug>\w+)/', views.question, name='question'),
     url(r'^ask/', views.ask, name='ask'),
     url(r'^popular/', views.popular, name='popular'),

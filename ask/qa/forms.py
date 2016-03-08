@@ -5,7 +5,7 @@ from qa.models import Answer, Question
 class AskForm(forms.Form):
     title = forms.CharField(max_length=255)
     text =  forms.CharField(widget=forms.Textarea)
-
+    author = forms.CharField(widget=forms.Textarea)
     def clean_title(self):
         title = self.cleaned_data['title']
         if title.strip()=='':
@@ -27,6 +27,7 @@ class AskForm(forms.Form):
 class AnswerForm(forms.Form):
     question = forms.IntegerField(widget=forms.HiddenInput)
     text = forms.CharField(widget=forms.Textarea)
+    author = forms.CharField(widget=forms.Textarea)
     def clean_question(self):
         question = self.cleaned_data['question']
         if question == 0:

@@ -1,12 +1,18 @@
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.core.urlresolvers import reverse
 from django.db import models
-from django.contrib.auth.models import User
-from django.http import Http404
+
+class User(models.Model):
+    username = models.CharField(unique=True, max_length=254)
+    password = models.CharField(max_length=254)
+    email = models.EmailField()
+class Session(models.Model):
+    key = models.CharField(unique=True, max_length=254)
+    user = models.ForeignKey(User)
+    expires = models.DateTimeField()
 
 
 class Question(models.Model):
-    title = models.CharField(max_length=255)
+    title = models.CharField(max_length=254)
     text = models.TextField()
     added_at = models.DateTimeField(auto_now_add=True)
     rating = models.IntegerField(default=0)
@@ -45,5 +51,6 @@ class Answer(models.Model):
 #             if len(res) >= limit:
 #                 break
 #         return res
+
 
 
