@@ -1,5 +1,6 @@
 from django import forms
 from django.shortcuts import get_object_or_404
+from django.template.backends import django
 from qa import models
 from qa.models import Answer, Question
 from django.contrib.auth.models import User
@@ -7,7 +8,7 @@ from django.contrib.auth.models import User
 class AskForm(forms.Form):
     title = forms.CharField(max_length=255)
     text =  forms.CharField(widget=forms.Textarea)
-    author = models.User
+    # author = models.User
     def clean_title(self):
         title = self.cleaned_data['title']
         if title.strip()=='':
@@ -20,9 +21,10 @@ class AskForm(forms.Form):
             raise forms.ValidationError(u'Text is empty', code = 12)
         return text
 
-    def save(self):
+    def save(self,user):
         # self.cleaned_data['author_id'] = 1
         post = Question(**self.cleaned_data)
+        post.author=user
         post.save()
         return post
     # class Meta:

@@ -59,9 +59,10 @@ def question(request, slug):
 def ask(request):
     if request.method == "POST":
         form = AskForm(request.POST)
-        form.author = models.User.objects.get(username=request.user)
+
         if form.is_valid():
-            question = form.save()
+            user = request.user
+            question = form.save(user)
             return HttpResponseRedirect(question.get_absolute_url())
             # return HttpResponseRedirect(reverse('question', args=[post.id]))
     else:
