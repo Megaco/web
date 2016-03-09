@@ -1,14 +1,15 @@
+from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from django.db import models
-
-class User(models.Model):
-    username = models.CharField(unique=True, max_length=254)
-    password = models.CharField(max_length=254)
-    email = models.EmailField()
-class Session(models.Model):
-    key = models.CharField(unique=True, max_length=254)
-    user = models.ForeignKey(User)
-    expires = models.DateTimeField()
+#
+# class User(models.Model):
+#     username = models.CharField(unique=True, max_length=254)
+#     password = models.CharField(max_length=254)
+#     email = models.EmailField()
+# class Session(models.Model):
+#     key = models.CharField(unique=True, max_length=254)
+#     user = models.ForeignKey(User)
+#     expires = models.DateTimeField()
 
 
 class Question(models.Model):
