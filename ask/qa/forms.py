@@ -1,11 +1,13 @@
 from django import forms
 from django.shortcuts import get_object_or_404
+from qa import models
 from qa.models import Answer, Question
+from django.contrib.auth.models import User
 
 class AskForm(forms.Form):
     title = forms.CharField(max_length=255)
     text =  forms.CharField(widget=forms.Textarea)
-    author = forms.CharField(widget=forms.Textarea)
+    author = models.User
     def clean_title(self):
         title = self.cleaned_data['title']
         if title.strip()=='':
@@ -23,11 +25,14 @@ class AskForm(forms.Form):
         post = Question(**self.cleaned_data)
         post.save()
         return post
+    # class Meta:
+    #     model = AskForm
+    #     exclude = ['author']
 
 class AnswerForm(forms.Form):
     question = forms.IntegerField(widget=forms.HiddenInput)
     text = forms.CharField(widget=forms.Textarea)
-    author = forms.CharField(widget=forms.Textarea)
+    author = models.User
     def clean_question(self):
         question = self.cleaned_data['question']
         if question == 0:
